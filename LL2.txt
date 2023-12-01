@@ -1,0 +1,174 @@
+142. Linked List Cycle II
+
+Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to (0-indexed). It is -1 if there is no cycle. Note that pos is not passed as a parameter.
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }sl
+ * }
+ */
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast!=null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow==fast){
+                break;
+            }
+        }
+        if(fast ==null || fast.next==null){
+            return null;
+        }
+        slow = head;
+        while(slow!=fast){
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
+    }
+}
+
+876. Middle of the Linked List
+
+Given the head of a singly linked list, return the middle node of the linked list.
+
+If there are two middle nodes, return the second middle node.
+
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while( fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    
+    }
+}
+
+234. Palindrome Linked List
+
+Given the head of a singly linked list, return true if it is a 
+palindrome or false otherwise.
+
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        ListNode reverse = reverse(copy(head));
+
+        while(head!=null && reverse!=null){
+            if(head.val != reverse.val){
+                return false;
+            }
+            head = head.next;
+            reverse = reverse.next;
+        }
+
+        return true;
+    }
+
+    public ListNode reverse(ListNode node){
+        ListNode prev = null;
+        ListNode current = node;
+
+        while(current!=null){
+            ListNode nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+        }
+
+        return prev;
+    }
+
+    public ListNode copy(ListNode node){
+        ListNode newHead = new ListNode(node.val);
+        ListNode current = newHead;
+        node = node.next;
+
+        while(node != null){
+            current.next = new ListNode(node.val);
+            node = node.next;
+            current = current.next;
+        }
+
+        return newHead;
+    }
+}
+
+21. Merge Two Sorted Lists
+
+You are given the heads of two sorted linked lists list1 and list2.
+
+Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.
+
+Return the head of the merged linked list.
+
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+
+        if(list1!=null && list2!=null){
+        if(list1.val<list2.val){
+            list1.next=mergeTwoLists(list1.next,list2);
+            return list1;
+            }
+            else{
+                list2.next=mergeTwoLists(list1,list2.next);
+                return list2;
+        }
+        }
+        if(list1==null)
+            return list2;
+        return list1;
+    }
+}
+
+148. Sort List
+
+Given the head of a linked list, return the list after sorting it in ascending order.
+
+class Solution {
+    public ListNode sortList(ListNode head) {
+        
+        // New arraylist to record the LL values
+        
+        ArrayList<Integer> arr = new ArrayList<Integer>();
+        ListNode curr = head;
+        while(curr != null){
+            arr.add(curr.val);
+            curr = curr.next;
+        } 
+        
+        // Sorting arraylist
+
+        Collections.sort(arr);
+        
+        // creating new head and pointing to sorted new nodes to form a new sorted LL
+        
+        ListNode head2 = new ListNode();
+        ListNode ret = head2;
+        for(int i=0;i<arr.size();i++){
+            ListNode newNode = new ListNode(arr.get(i));
+            head2.next = newNode;
+            head2 = head2.next;
+        }
+        
+        // Returning the new LL
+        
+        return ret.next;
+    }
+}
+
+ 
